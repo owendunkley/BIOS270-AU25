@@ -17,7 +17,9 @@ Examine the `.yaml` file and make sure you understand the role of each section
 micromamba create -f bioinfo_example.yaml
 micromamba activate bioinfo_example
 ```
-
+> Acidentaly installed to /home/users/odunkley/repos/BIOS270-AU25/Environment/$SCRATCH/envs/micromamba/envs/bioinfo_example so micromamba activate should precede this location. Iwould do this correctly if this were not for a single class example
+> AAAAASAAAAAAAHHADHSFGHASRFGDTH never fucking mind. Micromamba was installed incorrectly so all this shit is wasting my time on shitty wasted installs into incorrect directories. Why - just why? 
+> I'll reinstall micromamba on farmshare because I trust Khoa and will just use this rather than miniconda and Sherlock, which is what I'm used to.
 
 2. Run example scripts
 

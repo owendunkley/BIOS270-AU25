@@ -187,3 +187,11 @@ Answer the following questions in your `write-up`:
 1. How many slurm job will be submitted?
 2. What is the purpose of the `if` statement?
 3. What is the expected output in each `*.out` file?
+
+Answers also included in Writeups/writeup1/writeup1.md
+> How many slurm jobs will be submitted?
+3 (#SBATCH --array=0-2 submits a job for 0, 1, and 2)
+> What is the purpose of the if statement?
+Interesting choice - I was not familiar with this modulus-based job dispatching loop before, but taking the mod of the 3 array jobs (i % SLURM_ARRAY_TASK_COUNT) dispatches the jop associated with a given line in the input datafile to one of the three arrayed jobs based on whether the remainder is 0, 1, or 2, splitting the dispatching of input lines evenly between the three jobs.
+> What is the expected output in each *.out file 
+Each outfile whould have only the lines corresponding to the lines in the datafile for which the mod of i == the array job's index, printing to the file each "$i: $value" pair as a new line.
