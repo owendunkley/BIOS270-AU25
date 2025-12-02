@@ -11,6 +11,7 @@
 This section introduces the purpose of the write-up.  
 For example:  
 > This document is a practice exercise in writing and formatting Markdown files clearly and professionally.
+> My actual updates are in writeup 1 and on...
 
 ---
 
