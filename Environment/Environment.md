@@ -1,3 +1,8 @@
+
+---
+
+
+---
 # Enviroment
 
 In this section, we’ll learn how to use **conda (micromamba)** and **containers** (Docker, Singularity) to manage your software environment effectively.
@@ -17,7 +22,10 @@ Examine the `.yaml` file and make sure you understand the role of each section
 micromamba create -f bioinfo_example.yaml
 micromamba activate bioinfo_example
 ```
-
+> Acidentaly installed to /home/users/odunkley/repos/BIOS270-AU25/Environment/$SCRATCH/envs/micromamba/envs/bioinfo_example so micromamba activate should precede this location. Iwould do this correctly if this were not for a single class example
+> AAAAASAAAAAAAHHADHSFGHASRFGDTH never fucking mind. Micromamba was installed incorrectly so all this shit is wasting my time on shitty wasted installs into incorrect directories. Why - just why? 
+> I'll reinstall micromamba on farmshare because I trust Khoa and will just use this rather than miniconda and Sherlock, which is what I'm used to.
+> Ahhh I just needed to reinit Mamba after resetting the prefix location no not having hardcoded "$SCRATCH" as suggested in the course notes. I should trust myself on these issues.
 
 2. Run example scripts
 
@@ -27,6 +35,7 @@ Once the environment is active, test it by running the provided scripts:
 python example.py
 Rscript example.R
 ```
+> Worked once I updated the script filenames to accurately map to the filenames in the dir.
 
 3. Adding New Packages
 
@@ -60,7 +69,7 @@ Answer the following questions:
 >Remember to push the updated environment file and example outputs to your GitHub repository. Include your output plots and any observations in your write-up.
 
 
-# Container
+## 2. Container
 
 You will practice writing Docker image build instruction, push it to container registries (`Docker Hub` & `Stanford GitLab`), use Singularity to create container (`.sif`) image on Farmshare, mount your `$SCRATCH` directory to container, and run **code-server** or **JupyterLab** over an SSH tunnel.
 
@@ -86,7 +95,7 @@ You will practice writing Docker image build instruction, push it to container r
 - Build Docker image, this will take about 10 minutes. 
 
 ```bash
-docker build -t . bioinfo_example
+docker build --platform linux/amd64 -t bioinfo_example .
 ```
 
 - After image is built, push it to Docker Hub and Stanford Gitlab Container Registry. Before doing so, you need to tag the image name with the path to container registry. It will take a while to push the image, you know the trick, `tmux`!
@@ -95,9 +104,15 @@ docker build -t . bioinfo_example
 # Tag and push to Docker Hub
 docker tag bioinfo_example <DockerHub_Username>/bioinfo_example
 docker push <DockerHub_Username>/bioinfo_example
+```
+
+```bash
 # Tag and push to Stanford Gitlab (On another tmux session/window)
+# Connect docker with Stanford Gitlab
+docker login scr.svc.stanford.edu
+# Use your SUNetID as username and set your password at https://code.stanford.edu/-/user_settings/password/edit
 docker tag bioinfo_example scr.svc.stanford.edu/<SUNetID>/containers/bioinfo_example
-docker push <DockerHub_Username>/bioinfo_example
+docker push scr.svc.stanford.edu/<SUNetID>/containers/bioinfo_example
 ```
 
 3. Pull image to Farmshare with Singularity. You can pull from either registry
@@ -108,11 +123,17 @@ singularity pull docker://scr.svc.stanford.edu/<SUNetID>/containers/bioinfo_exam
 After finished, you should see a file `bioinfo_example_latest.sif`. That's all you need for a reproducible environment! Now run 
 
 ```bash
-singularity run `bioinfo_example_latest.sif` 
+singularity run bioinfo_example_latest.sif 
 ```
 And test if everything runs well (python, R, rclone, etc...)
 
-Create an example `python` file in your `$SCRATCH` that prints "Hello World!" and execute the file with your singularity container. Can you run it? Why do you think this is the case? *(Hint: -B flag)*
+Create an example `python` file in your `$SCRATCH` that prints "Hello World!" and execute the file with your singularity container. 
+
+```bash
+singularity run bioinfo_example_latest.sif python print_hello.py  
+```
+
+Can you run it? Why do you think this is the case? *(Hint: -B flag)*
 
 4. Writing your own `Dockerfile`
 
@@ -147,13 +168,13 @@ On **Farmshare** (remote), start the service inside the container
 
 + code-server (VS Code in the browser):
 ```bash
-singularity run -B /farmshare/users/[SUNetID],/farmshare/home/classes/bios/270 bioinformatics_latest.sif \
+singularity run -B /farmshare/user_data/[SUNetID],/farmshare/home/classes/bios/270 bioinformatics_latest.sif \
   code-server --bind-addr 127.0.0.1:<PORT> --auth none
 ```
 
 + JupyterLab:
 ```bash
-singularity run -B /farmshare/users/[SUNetID],/farmshare/home/classes/bios/270 bioinformatics_latest.sif \
+singularity run -B /farmshare/user_data/[SUNetID],/farmshare/home/classes/bios/270 bioinformatics_latest.sif \
   jupyter lab --ip 127.0.0.1 --port <PORT> \
   --NotebookApp.allow_origin='https://colab.research.google.com' \
   --NotebookApp.port_retries=0 --no-browser
