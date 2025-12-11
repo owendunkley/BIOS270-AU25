@@ -1,4 +1,4 @@
-# Write-up 0: template
+# Write-up 1
 
 **Name:** Owen Dunkley  
 **Student ID:** odunkley  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-Notes taken during the first presentation and day 1
+Notes taken during the first presentation and day 1, followed by answers to questions in Setup.md
 
 ---
 
