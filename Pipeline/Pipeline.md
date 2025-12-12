@@ -1,9 +1,6 @@
 # Pipeline
 
-> *"I’ll just run these steps manually this one time..." — last words before three weeks of debugging filenames.*
-
-
-Today, we’ll learn how to build and manage pipelines using **SLURM** and **Nextflow**
+Running this ended up filling up all the space in my dir such that I was unable to even write temporary vim files or save any updates. I had to pull the repo onto my laptop and update based on my memory. I must have made a mistake in where the trimmed files should go but you need to fix this in future years such that students don't waste so much time.
 
 ---
 
@@ -17,6 +14,9 @@ Today, we’ll learn how to build and manage pipelines using **SLURM** and **Nex
 
 How could one add a differential expression analysis (DESeq2) step to the `rnaseq_pipeline_array_depend.sh` script such that DESeq2 runs only after all `salmon` jobs for all samples have completed?
 *(No code required - describe conceptually)*
+
+I previously wrote a better version of this that I couldn't recover because I didn't push my update early enough.
+I would make an array of the jobs being run in salmon, make those into a colon separated list, then have that as a dependency that all those are complete when the deseq2 run outside of the main loop gets called.
 
 ---
 
@@ -40,6 +40,8 @@ Modify your pipeline such that:
 1. If the user provides `index` in `params.yaml`, use `index` directly as input for `SALMON` process, skip `SALMON_INDEX`.  
 2. If `index` is **not provided**, but `transcriptome` is, run `SALMON_INDEX` to build index and used the output index directory as input to `SALMON`.  
 3. If **neither** parameter is provided, exit with an informative error message.
+
+done
 
 ---
 
