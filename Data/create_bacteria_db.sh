@@ -7,7 +7,8 @@
 #SBATCH --mem=4G
 #SBATCH --time=04:00:00
 
+ml apptainer/1.3.4
 DATABASE="bacteria.db"
-$RUN python insert_gff_table.py --database_path $DATABASE
+#$RUN python insert_gff_table.py --database_path $DATABASE
 $RUN python insert_protein_cluster_table.py --database_path $DATABASE
 $RUN python insert_metadata_table.py --database_path $DATABASE
